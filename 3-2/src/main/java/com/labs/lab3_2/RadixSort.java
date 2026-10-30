@@ -11,22 +11,24 @@ public class RadixSort implements Sorting<BigInteger> {
     @Override
     public void sort(List<BigInteger> nums) {
         // идем по цифрам справа налево (с последней до первой)
-        for (int pos = LENGTH - 1; pos >= 0; pos--) { // 20 раз
-            List<BigInteger> result = new ArrayList<>();
-
-            // сначала забираем все числа, у которых на позиции pos цифра 0,
-            // потом все с цифрой 1, потом с 2 и тд до 9
-            for (int digit = 0; digit <= 9; digit++) { // 10 раз
-                for (BigInteger num : nums) {          // n раз
-                    if (num.toString().charAt(pos) - '0' == digit) {
-                        result.add(num);
-                    }
-                }
+        for (int pos = LENGTH - 1; pos >= 0; pos--) {
+            // 10 корзин: в корзину 0 кладем числа с цифрой 0, в корзину 1 с цифрой 1 и тд
+            List<List<BigInteger>> buckets = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                buckets.add(new ArrayList<>());
             }
 
-            // теперь числа упорядочены по цифре на позиции pos
+            // один раз проходим по числам и кидаем каждое в корзину по его цифре
+            for (BigInteger num : nums) {
+                int digit = num.toString().charAt(pos) - '0';
+                buckets.get(digit).add(num);
+            }
+
+            // собираем корзины обратно по порядку: 0, 1, 2 ... 9
             nums.clear();
-            nums.addAll(result);
+            for (List<BigInteger> bucket : buckets) {
+                nums.addAll(bucket);
+            }
         }
     }
 }
