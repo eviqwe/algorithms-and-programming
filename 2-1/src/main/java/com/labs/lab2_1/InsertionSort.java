@@ -5,7 +5,7 @@ import java.util.List;
 public class InsertionSort implements Sorting<Integer> {
     @Override
     public void sort(List<Integer> nums) {
-        // идем по массиву начиная со 2 элемента
+        // идем по массиву начиная со 2 элемента, потому что элемент и индексом 0 считается уже отсортированной частью
         for (int i = 1; i < nums.size(); i++) {
             int current = nums.get(i);
             int j = i - 1;
